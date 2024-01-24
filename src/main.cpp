@@ -1,10 +1,40 @@
+#include <fstream>
 #include <iostream>
-
-#include <torch/torch.h>
+#include <vector>
 
 int main()
 {
-    std::cout << "Hello, world!";
-    torch::Tensor x = torch::ones(9);
+    return 0;
+}
+
+void on_tick(std::vector<bullet>* bullets)
+{
+    bullets.clear();
+
+    float pos_x;
+    float pox_y;
+    float size_x;
+    float size_y;
+
+    ifstream inp;
+    inp.open("bin.dat", std::ios::in | std::ios::binary);
+
+    char[4] s;
+    inp.seekg (0, is.end);
+    size_t length = inp.tellg() / (4 * 4);
+    inp.seekg (0, is.beg);
+    bullet b;
+
+    for (size_t i = 0; i < length; ++i)
+    {
+        inp.read(&b, 16);
+        bullets.push_back(b);
+    }
+}
+
+int main()
+{
+    std::vector<bullet> bullets;
+    on_tick(bullets);
     return 0;
 }
