@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+#include "structs.hpp"
+
 int main()
 {
     return 0;
