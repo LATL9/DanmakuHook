@@ -11,7 +11,7 @@ int main()
 
 void on_tick(std::vector<bullet>* bullets)
 {
-    bullets.clear();
+    bullets->clear();
 
     float pos_x;
     float pox_y;
@@ -30,7 +30,7 @@ void on_tick(std::vector<bullet>* bullets)
     for (size_t i = 0; i < length; ++i)
     {
         inp.read(&b, 16);
-        bullets.push_back(b);
+        bullets->push_back(b);
     }
 }
 
