@@ -20,9 +20,9 @@ void on_tick(std::vector<bullet>* bullets)
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
     char[4] s;
-    inp.seekg (0, is.end);
+    inp.seekg (0, inp.end);
     size_t length = inp.tellg() / (4 * 4);
-    inp.seekg (0, is.beg);
+    inp.seekg (0, inp.beg);
     bullet b;
 
     for (size_t i = 0; i < length; ++i)
