@@ -29,7 +29,7 @@ void on_tick(std::vector<bullet>* bullets)
 
     for (size_t i = 0; i < length; ++i)
     {
-        inp.read(&b, 16);
+        inp.read((void*)&b, 16);
         bullets->push_back(b);
     }
 }
