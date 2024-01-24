@@ -18,7 +18,7 @@ void on_tick(std::vector<bullet>* bullets)
     float size_x;
     float size_y;
 
-    ifstream inp;
+    std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
     char[4] s;
