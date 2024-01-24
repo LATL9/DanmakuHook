@@ -5,6 +5,6 @@
 int main()
 {
     std::cout << "Hello, world!";
-    torch::Tensor x = torch::Tensor(3, 3);
+    torch::Tensor x = torch::ones(9);
     return 0;
 }
