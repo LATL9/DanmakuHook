@@ -4,7 +4,7 @@
 
 #include "structs.hpp"
 
-void on_tick(std::vector<bullet>* bullets)
+void on_tick(std::vector<bullet>& bullets)
 {
     bullets->clear();
 
