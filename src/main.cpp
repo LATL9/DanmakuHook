@@ -4,11 +4,6 @@
 
 #include "structs.hpp"
 
-int main()
-{
-    return 0;
-}
-
 void on_tick(std::vector<bullet>* bullets)
 {
     bullets->clear();
