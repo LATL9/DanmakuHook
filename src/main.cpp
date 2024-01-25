@@ -8,9 +8,9 @@
 
 #include <time.h>
 
-void on_tick(std::vector<bullet>& bullets)
+void get_bullets(std::vector<bullet>& bullets)
 {
-    bullets.clear();
+    std::vector<bullet> bullets;
 
     std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
@@ -32,9 +32,15 @@ void on_tick(std::vector<bullet>& bullets)
 int main()
 {
     std::vector<bullet> bullets;
-    clock_t tStart = clock();
-    on_tick(bullets);
-    printf("Time taken: %s\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+
+    clock_t tStart;
+    while (true)
+    {
+        tStart = clock();
+        bullets = get_bullets(bullets);
+
+        printf("Time taken: %s\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    }
 
     return 0;
 }
