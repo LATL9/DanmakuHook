@@ -32,12 +32,12 @@ void get_bullets(std::vector<bullet>& bullets)
 int main()
 {
     std::vector<bullet> bullets;
-
     clock_t tStart;
+
     while (true)
     {
         tStart = clock();
-        bullets = get_bullets(bullets);
+        get_bullets(bullets);
 
         printf("Time taken: %s\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
     }
