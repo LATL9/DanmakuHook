@@ -32,6 +32,6 @@ int main()
     std::vector<bullet> bullets;
     on_tick(bullets);
 
-    torch::Tensor tensor = torch::Tensor(3, 3);
+    torch::Tensor tensor = torch::Tensor({3, 3});
     return 0;
 }
