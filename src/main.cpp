@@ -22,11 +22,12 @@ void on_tick(std::vector<bullet>& bullets)
     inp.seekg (0, inp.beg);
     bullet b;
 
-    for (size_t i = 0; i < length; ++i)
+    while (!inp.fail())
     {
-        inp.read((char*)&b, 16);
         bullets.push_back(b);
+        inp.read((char*)&b, 16);
     }
+    bullets.erase(bullets.begin());
 }
 
 int main()

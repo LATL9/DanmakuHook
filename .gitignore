@@ -4,4 +4,5 @@ bin/release/*
 bin/debug/*
 bin/release/*
 obj/
+bin.dat
 README.md.backup
