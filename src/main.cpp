@@ -10,21 +10,14 @@
 
 void get_bullets(std::vector<bullet>& bullets)
 {
-    std::vector<bullet> bullets;
-
     std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
-    char s[4];
-    inp.seekg (0, inp.end);
-    size_t length = inp.tellg() / (sizeof(float) * 4);
-    inp.seekg (0, inp.beg);
     bullet b;
-
     while (!inp.fail())
     {
         bullets.push_back(b);
-        inp.read((char*)&b, 16);
+        inp.read((char*)&b, sizeof(float) * 4);
     }
     bullets.erase(bullets.begin());
 }
