@@ -34,7 +34,7 @@ int main()
     std::vector<bullet> bullets;
     clock_t tStart = clock();
     on_tick(bullets);
-    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    printf("Time taken: %s\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 
     return 0;
 }
