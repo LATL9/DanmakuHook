@@ -10,6 +10,8 @@
 
 void get_bullets(std::vector<bullet>& bullets)
 {
+    bullets.clear();
+
     std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
@@ -31,6 +33,7 @@ int main()
     {
         tStart = clock();
         get_bullets(bullets);
+
 
         printf("Time taken: %s\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
     }
