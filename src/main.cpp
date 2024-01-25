@@ -10,11 +10,6 @@ void on_tick(std::vector<bullet>& bullets)
 {
     bullets.clear();
 
-    float pos_x;
-    float pox_y;
-    float size_x;
-    float size_y;
-
     std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
