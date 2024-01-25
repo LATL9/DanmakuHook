@@ -3,7 +3,7 @@ RELEXE:=DanmakuHook-release
 CONFIG:=debug
 OS?=LIN
 
-LDFLAGS:= -L libtorch/lib -ltorch -lcaffe2 -lc10
+LDFLAGS:= -L libtorch/lib -ltorch -lcaffe2_protos -lc10
 
 CFLAGS:= -pedantic -Wall -Wextra -Wno-missing-field-initializers -std=c++17 -I include -I libtorch/include -I libtorch/include/torch/csrc/api/include
 
