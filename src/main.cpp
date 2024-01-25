@@ -6,6 +6,8 @@
 
 #include "structs.hpp"
 
+#include <time>
+
 void on_tick(std::vector<bullet>& bullets)
 {
     bullets.clear();
@@ -15,7 +17,7 @@ void on_tick(std::vector<bullet>& bullets)
 
     char s[4];
     inp.seekg (0, inp.end);
-    size_t length = inp.tellg() / (4 * 4);
+    size_t length = inp.tellg() / (sizeof(float) * 4);
     inp.seekg (0, inp.beg);
     bullet b;
 
@@ -30,8 +32,9 @@ void on_tick(std::vector<bullet>& bullets)
 int main()
 {
     std::vector<bullet> bullets;
+    clock_t tStart = clock();
     on_tick(bullets);
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 
-    torch::Tensor tensor = torch::Tensor({3, 3});
     return 0;
 }
