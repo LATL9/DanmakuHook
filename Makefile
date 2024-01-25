@@ -5,7 +5,7 @@ OS?=LIN
 
 LDFLAGS:= -L libtorch/lib
 
-CFLAGS:= -D_GLIBCXX_USE_CX11_ABI=0 -pedantic -Wall -Wextra -Wno-missing-field-initializers -std=c++17 -I include -I libtorch/include -I libtorch/include/torch/csrc/api/include
+CFLAGS:= -pedantic -Wall -Wextra -Wno-missing-field-initializers -std=c++11 -I include -I libtorch/include -I libtorch/include/torch/csrc/api/include
 
 DBGBINDIR:=bin/debug
 RELBINDIR:=bin/release
