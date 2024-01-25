@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+#include "torch/torch.h"
+
 #include "structs.hpp"
 
 void on_tick(std::vector<bullet>& bullets)
