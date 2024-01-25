@@ -6,7 +6,7 @@
 
 #include "structs.hpp"
 
-#include <time>
+#include <time.h>
 
 void on_tick(std::vector<bullet>& bullets)
 {
