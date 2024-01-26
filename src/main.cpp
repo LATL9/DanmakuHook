@@ -11,11 +11,10 @@
 #include "controls.hpp"
 #include "structs.hpp"
 
-void load_model(torch::device device, torch::nn::Sequential& model)
+void load_model(torch::nn::Sequential& model)
 {
-    auto checkpoint = torch.load("models/model.pt", map_location=device)
+    auto checkpoint = torch.load("models/model.pt")
     model.load_state_dict(checkpoint['model_state_dict'])
-    model.to(device)
 }
 
 void get_data(player& p, std::vector<bullet>& bullets)
@@ -41,7 +40,7 @@ void get_data(player& p, std::vector<bullet>& bullets)
     bullets.erase(bullets.begin());
 }
 
-torch::Tensor get_input(player& p, std::vector<bullet> bullets)
+get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
 {
     torch::Tensor input;
 
@@ -69,7 +68,7 @@ torch::Tensor get_input(player& p, std::vector<bullet> bullets)
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        input[std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1;
+                        input[index][std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
             }
@@ -150,22 +149,20 @@ int main()
     std::vector<bullet> bullets;
     player p;
     torch::Tensor input = torch::full({ 2, 32, 32 }, 0);
-    torch::Tensor prev_frame = torch::full({ 32, 32 }, 0);
-    torch::Tensor cur_frame = torch::full({ 32, 32 }, 0);
 
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
 
-    load_model(torch::device("cpu"), model);
+    load_model(model);
 
     while (true)
     {
         time = clock();
         get_bullets(p, bullets);
-        prev_frame = get_input(p, bullets);
+        get_input(input, 0, p, bullets);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
         get_bullets(bullets);
-        cur_frame = get_input(p, bullets);
+        get_input(input, 1, p, bullets);
 
         get_action(model, input, output);
         ctrls.exec_action(output, time, KEYS);
