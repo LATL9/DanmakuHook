@@ -18,13 +18,20 @@ void load_model(torch::device device, torch::nn::Sequential& model)
     model.to(device)
 }
 
-void get_bullets(std::vector<bullet>& bullets)
+void get_data(player& p, std::vector<bullet>& bullets)
 {
     bullets.clear();
 
     std::ifstream inp;
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
+    // get player data
+    if (!inp.fail)
+    {
+        inp.read((char*)&p, sizeof(float) * 4);
+    }
+
+    // get bullet data
     bullet b;
     while (!inp.fail())
     {
@@ -34,37 +41,41 @@ void get_bullets(std::vector<bullet>& bullets)
     bullets.erase(bullets.begin());
 }
 
-void get_input(torch::Tensor& input, player p, std::vector<bullet> bullets)
+torch::Tensor get_input(player& p, std::vector<bullet> bullets)
 {
+    torch::Tensor input;
+
     float b_x;
     float b_y;
-    float p_x = p.pos.x + PLAYER_SIZE / 2
-    float p_y = p.pos.y + PLAYER_SIZE / 2
+    float p_x = p.pos.x + PLAYER_SIZE / 2;
+    float p_y = p.pos.y + PLAYER_SIZE / 2;
     int x;
     int y;
 
     for (size_t i = 0; i < self.bullets.size(); ++i)
     {
-        b_x = bullets[i].pos.x + bullets[i].size.x / 2
-        b_y = bullets[i].pos.y + bullets[i].size.y / 2
+        b_x = bullets[i].pos.x + bullets[i].size.x / 2;
+        b_y = bullets[i].pos.y + bullets[i].size.y / 2;
         if (b_x - p_x >= WIDTH / -3 &&
             b_x - p_x < WIDTH / 3 &&
             b_y - p_y >= HEIGHT / -3 &&
             b_y - p_y < HEIGHT / 3)
         {
-            x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2))
-            y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2))
-            for (size_t y_2 = -2; y_2 < 3; ++y)
+            x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
+            y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
+            for (size_t y_2 = -2; y_2 < 3; ++y);
             {
                 for (size_t x_2 = -2; y_2 < 3; ++y)
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        input[std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1
+                        input[std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1;
+                    }
                 }
             }
         }
     }
+    return input;
 }
 
 void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
@@ -137,7 +148,11 @@ int main()
     )
 
     std::vector<bullet> bullets;
+    player p;
     torch::Tensor input = torch::full({ 2, 32, 32 }, 0);
+    torch::Tensor prev_frame = torch::full({ 32, 32 }, 0);
+    torch::Tensor cur_frame = torch::full({ 32, 32 }, 0);
+
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
 
@@ -146,11 +161,11 @@ int main()
     while (true)
     {
         time = clock();
-        get_bullets(bullets);
-        get_input(input[0]);
+        get_bullets(p, bullets);
+        prev_frame = get_input(p, bullets);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
         get_bullets(bullets);
-        get_input(input[1]);
+        cur_frame = get_input(p, bullets);
 
         get_action(model, input, output);
         ctrls.exec_action(output, time, KEYS);
