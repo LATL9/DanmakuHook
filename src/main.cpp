@@ -10,7 +10,7 @@
 #include <X11/extensions/XTest.h>
 
 #include "torch/script.h"
-#include "torch/torch.h"
+//#include "torch/torch.h"
 //#include "ATen/ATen.h"
 
 #include "structs.hpp"
@@ -25,12 +25,12 @@
 #define ACTION_TIME (double)(12 / FRAMES_PER_ACTION) / 60
 #define FRAME_TIME (double)1 / 60
 
-void load_model(torch::device device, torch::nn::Sequential& model)
-{
-    auto checkpoint = torch.load("models/model.pt", map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
-    model.to(device)
-}
+//void load_model(torch::device device, torch::nn::Sequential& model)
+//{
+//    auto checkpoint = torch.load("models/model.pt", map_location=device)
+//    model.load_state_dict(checkpoint['model_state_dict'])
+//    model.to(device)
+//}
 
 void get_bullets(std::vector<bullet>& bullets)
 {
@@ -81,44 +81,44 @@ void get_input(std::Tensor& input, player p, std::vector<bullet> bullets)
     }
 }
 
-void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
-{
-    torch::Tensor y = model(input);
-    int32_t* y_ptr = input.data_ptr<int32_t>();
-    std::vector<int32_t> y_vector{r_ptr, r_ptr + input.?};
-
-    for (size_t i = 0; i < FRAMES_PER_ACTIONl ++i)
-    {
-        for (size_t j = 0; j < 4; ++j)
-        {
-            if (y_vector[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
-        }
-        for (size_t j = 0; j < 4; j += 2)
-        {
-            if (output[i][j] == 1 and output[i][j + 1] == 1)
-            {
-                if (y_vector[i * 4 + j] > j_vector[i * 4 + j + 1])
-                {
-                    output[i][j + 1] = 0
-                } else {
-                    output[i][j] = 0
-                }
-            }
-        }
-    }
-}
-
-void exec_action(std::array output, clock_t time, std::array KEYS)
-{
-    for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
-    {
-            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
-            for (size_t j = 0; j < 4; ++j)
-            {
-                XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
-            }
-    }
-}
+//void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
+//{
+//    torch::Tensor y = model(input);
+//    int32_t* y_ptr = input.data_ptr<int32_t>();
+//    std::vector<int32_t> y_vector{r_ptr, r_ptr + input.?};
+//
+//    for (size_t i = 0; i < FRAMES_PER_ACTIONl ++i)
+//    {
+//        for (size_t j = 0; j < 4; ++j)
+//        {
+//            if (y_vector[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
+//        }
+//        for (size_t j = 0; j < 4; j += 2)
+//        {
+//            if (output[i][j] == 1 and output[i][j + 1] == 1)
+//            {
+//                if (y_vector[i * 4 + j] > j_vector[i * 4 + j + 1])
+//                {
+//                    output[i][j + 1] = 0
+//                } else {
+//                    output[i][j] = 0
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//void exec_action(std::array output, clock_t time, std::array KEYS)
+//{
+//    for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
+//    {
+//            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+//            for (size_t j = 0; j < 4; ++j)
+//            {
+//                XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
+//            }
+//    }
+//}
 
 int main()
 {
@@ -168,7 +168,7 @@ int main()
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
 
-    load_model(torch::device("cpu"), model);
+    //load_model(torch::device("cpu"), model);
 
     while (true)
     {
@@ -179,10 +179,10 @@ int main()
         get_bullets(bullets);
         get_input(input[1]);
 
-        get_action(model, input, output);
-        exec_action(output, time, KEYS);
+        //get_action(model, input, output);
+        //exec_action(output, time, KEYS);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
-    }
+    }`
 
     return 0;
 }
