@@ -137,7 +137,7 @@ int main()
 //    )
 
     std::vector<bullet> bullets;
-    torch::Tensor input = torch::Tensor({ 2, 32, 32 });
+    torch::Tensor input = torch::full({ 2, 32, 32 });
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
 
