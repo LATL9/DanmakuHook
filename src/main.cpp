@@ -10,6 +10,7 @@
 #include <X11/extensions/XTest.h>
 
 #include "torch/torch.h"
+#include "ATen/ATen.h"
 
 #include "structs.hpp"
 
@@ -79,7 +80,7 @@ void get_input(std::Tensor& input, player p, std::vector<bullet> bullets)
     }
 }
 
-void get_action(torch::nn::Sequential model, torch::Tensor input, torch::Tensor output)
+void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
 {
     torch::Tensor y = model(input);
     int32_t* y_ptr = input.data_ptr<int32_t>();
@@ -106,12 +107,15 @@ void get_action(torch::nn::Sequential model, torch::Tensor input, torch::Tensor 
     }
 }
 
-void exec_action(torch::Tensor output, clock_t time, std::array KEYS)
+void exec_action(std::array output, clock_t time, std::array KEYS)
 {
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
-            while ((double)(clock() - time) / CLOCKS_PER_SEC < ACTION_TIME) { continue; }
-
+            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+            for (size_t j = 0; j < 4; ++j)
+            {
+                XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
+            }
     }
 }
 
@@ -160,7 +164,7 @@ int main()
     )
     std::vector<bullet> bullets;
     torch::Tensor input = torch.Tensor{(2, 32, 32});
-    torch::Tensor output = torch.Tensor({FRAMES_PER_ACTION, 4});
+    std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
 
     load_model(torch::device("cpu"), model);
@@ -171,13 +175,12 @@ int main()
         get_bullets(bullets);
         get_input(input[0]);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
-        time = clock();
         get_bullets(bullets);
         get_input(input[1]);
 
         get_action(model, input, output);
         exec_action(output, time, KEYS);
-        while ((double)(clock() - time) / CLOCKS_PER_SEC < ACTION_TIME) { continue; }
+        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
     }
 
     return 0;
