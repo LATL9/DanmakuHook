@@ -5,7 +5,7 @@ OS?=LIN
 
 LDFLAGS:= -L libtorch/lib -ltorch -ltorch_cpu -lc10 -lX11 -lXtst
 
-CFLAGS:= -pedantic -static -Wall -Wextra -Wno-missing-field-initializers -std=c++17 -I include -I libtorch/include -I libtorch/include/torch/csrc/api/include
+CFLAGS:= -pedantic -Wall -Wextra -Wno-missing-field-initializers -std=c++17 -I include -I libtorch/include -I libtorch/include/torch/csrc/api/include
 
 DBGBINDIR:=bin/debug
 RELBINDIR:=bin/release
@@ -26,7 +26,7 @@ debug:CONFIG:=debug
 debug:CFLAGS+= -g
 
 release:CONFIG:=release
-release: CFLAGS+= -O3
+release: CFLAGS+= -O3 -static
 
 debug: $(DBGOBJ)
 	$(CC) $(DBGOBJ) -o $(DBGBINDIR)/$(DBGEXE) $(LDFLAGS)
