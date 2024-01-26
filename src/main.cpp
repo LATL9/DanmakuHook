@@ -48,39 +48,39 @@ void get_bullets(std::vector<bullet>& bullets)
     bullets.erase(bullets.begin());
 }
 
-void get_input(std::Tensor& input, player p, std::vector<bullet> bullets)
-{
-    float b_x;
-    float b_y;
-    float p_x = p.pos.x + PLAYER_SIZE / 2
-    float p_y = p.pos.y + PLAYER_SIZE / 2
-    int x;
-    int y;
-
-    for (size_t i = 0; i < self.bullets.size(); ++i)
-    {
-        b_x = bullets[i].pos.x + bullets[i].size.x / 2
-        b_y = bullets[i].pos.y + bullets[i].size.y / 2
-        if (b_x - p_x >= WIDTH / -3 &&
-            b_x - p_x < WIDTH / 3 &&
-            b_y - p_y >= HEIGHT / -3 &&
-            b_y - p_y < HEIGHT / 3)
-        {
-            x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2))
-            y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2))
-            for (size_t y_2 = -2; y_2 < 3; ++y)
-            {
-                for (size_t x_2 = -2; y_2 < 3; ++y)
-                {
-                    if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
-                    {
-                        input[std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1
-                }
-            }
-        }
-    }
-}
-
+//void get_input(torch::Tensor& input, player p, std::vector<bullet> bullets)
+//{
+//    float b_x;
+//    float b_y;
+//    float p_x = p.pos.x + PLAYER_SIZE / 2
+//    float p_y = p.pos.y + PLAYER_SIZE / 2
+//    int x;
+//    int y;
+//
+//    for (size_t i = 0; i < self.bullets.size(); ++i)
+//    {
+//        b_x = bullets[i].pos.x + bullets[i].size.x / 2
+//        b_y = bullets[i].pos.y + bullets[i].size.y / 2
+//        if (b_x - p_x >= WIDTH / -3 &&
+//            b_x - p_x < WIDTH / 3 &&
+//            b_y - p_y >= HEIGHT / -3 &&
+//            b_y - p_y < HEIGHT / 3)
+//        {
+//            x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2))
+//            y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2))
+//            for (size_t y_2 = -2; y_2 < 3; ++y)
+//            {
+//                for (size_t x_2 = -2; y_2 < 3; ++y)
+//                {
+//                    if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
+//                    {
+//                        input[std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1
+//                }
+//            }
+//        }
+//    }
+//}
+//
 //void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
 //{
 //    torch::Tensor y = model(input);
@@ -139,32 +139,32 @@ int main()
         XKeysymToKeycode(display, XK_Z),
     }
 
-    torch::nn::Sequential model = torch::nn::Sequential(
-        torch::nn::ConstantPad2d(7, 1),
-        torch::nn::Conv2d(2, 16, kernel_size=(15, 15)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
-        torch::nn::ConstantPad2d(3, 1),
-        torch::nn::Conv2d(16, 64, kernel_size=(7, 7)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
-        torch::nn::ConstantPad2d(1, 1),
-        torch::nn::Conv2d(64, 128, kernel_size=(3, 3)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
-        torch::nn::Flatten(1, 3),
-        torch::nn::Linear(2048, 1024),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(1024, 256),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(256, 64),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(64, 4 * FRAMES_PER_ACTION),
-        torch::nn::Sigmoid(),
-        torch::nn::ReLU()
-    )
+//    torch::nn::Sequential model = torch::nn::Sequential(
+//        torch::nn::ConstantPad2d(7, 1),
+//        torch::nn::Conv2d(2, 16, kernel_size=(15, 15)),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::MaxPool2d((2, 2), stride=2),
+//        torch::nn::ConstantPad2d(3, 1),
+//        torch::nn::Conv2d(16, 64, kernel_size=(7, 7)),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::MaxPool2d((2, 2), stride=2),
+//        torch::nn::ConstantPad2d(1, 1),
+//        torch::nn::Conv2d(64, 128, kernel_size=(3, 3)),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::MaxPool2d((2, 2), stride=2),
+//        torch::nn::Flatten(1, 3),
+//        torch::nn::Linear(2048, 1024),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::Linear(1024, 256),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::Linear(256, 64),
+//        torch::nn::LeakyReLU(),
+//        torch::nn::Linear(64, 4 * FRAMES_PER_ACTION),
+//        torch::nn::Sigmoid(),
+//        torch::nn::ReLU()
+//    )
     std::vector<bullet> bullets;
-    torch::Tensor input = torch.Tensor{(2, 32, 32});
+    //torch::Tensor input = torch.Tensor{(2, 32, 32});
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
 
