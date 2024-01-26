@@ -14,7 +14,7 @@
 void load_model(torch::nn::Sequential& model)
 {
     auto checkpoint = torch::load("models/model.pt");
-    model.load_state_dict(checkpoint["model_state_dict"]);
+    model.load_state_dict(checkpoint['model_state_dict']);
 }
 
 void get_data(player& p, std::vector<bullet>& bullets)
@@ -110,12 +110,15 @@ int main()
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(7, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(2, 16, 15)),
         torch::nn::LeakyReLU(),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2, 2).stride({2, 2})),
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(3, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 64, 7)),
         torch::nn::LeakyReLU(),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride({2, 2})),
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(1, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, 3)),
         torch::nn::LeakyReLU(),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride({2, 2})),
         torch::nn::Flatten(1, 3),
         torch::nn::Linear(2048, 1024),
         torch::nn::LeakyReLU(),
