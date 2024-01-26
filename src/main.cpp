@@ -132,11 +132,11 @@ int main()
     XSelectInput(display, rootwindow, KeyPressMask);
 
     const std::array<unsigned int, 5> KEYS = {
-        XKeysymToKeycode(display, XK_UP),
-        XKeysymToKeycode(display, XK_DOWN),
-        XKeysymToKeycode(display, XK_LEFT),
-        XKeysymToKeycode(display, XK_RIGHT),
-        XKeysymToKeycode(display, XK_Z),
+        XKeysymToKeycode(display, XK_Up),
+        XKeysymToKeycode(display, XK_Down),
+        XKeysymToKeycode(display, XK_Left),
+        XKeysymToKeycode(display, XK_Right),
+        XKeysymToKeycode(display, XK_Z)
     }
 
 //    torch::nn::Sequential model = torch::nn::Sequential(
@@ -174,15 +174,15 @@ int main()
     {
         time = clock();
         get_bullets(bullets);
-        get_input(input[0]);
+        //get_input(input[0]);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
         get_bullets(bullets);
-        get_input(input[1]);
+        //get_input(input[1]);
 
         //get_action(model, input, output);
         //exec_action(output, time, KEYS);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
-    }`
+    }
 
     return 0;
 }
