@@ -7,11 +7,11 @@
 //
 //#include <X11/Xlib.h>
 #include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
+//#include <X11/extensions/XTest.h>
 //
 #include "torch/torch.h"
 
-#include "keypress.cpp"
+#include "controls.cpp"
 #include "structs.hpp"
 
 #define WIDTH 800
@@ -166,6 +166,7 @@ int main()
     torch::Tensor input = torch.Tensor{(2, 32, 32});
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
+    controls ctrls;
 
     //load_model(torch::device("cpu"), model);
 
@@ -179,7 +180,7 @@ int main()
         //get_input(input[1]);
 
         //get_action(model, input, output);
-        //exec_action(output, time, KEYS);
+        ctrls.exec_action(output, time, KEYS);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
     }
 
