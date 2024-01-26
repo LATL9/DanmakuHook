@@ -32,9 +32,9 @@
 //    model.to(device)
 //}
 
-//void get_bullets(std::vector<bullet>& bullets)
-//{
-//    bullets.clear();
+void get_bullets(std::vector<bullet>& bullets)
+{
+    bullets.clear();
 
 //    std::ifstream inp;
 //    inp.open("bin.dat", std::ios::in | std::ios::binary);
@@ -46,7 +46,7 @@
 //        inp.read((char*)&b, sizeof(float) * 4);
 //    }
 //    bullets.erase(bullets.begin());
-//}
+}
 
 //void get_input(torch::Tensor& input, player p, std::vector<bullet> bullets)
 //{
