@@ -7,18 +7,9 @@
 //
 #include "torch/torch.h"
 
+#include "common.hpp"
 #include "controls.hpp"
 #include "structs.hpp"
-
-#define WIDTH 800
-#define HEIGHT 800
-
-#define INPUT_SIZE 32
-#define PLAYER_SIZE 5
-
-#define FRAMES_PER_ACTION 3
-#define ACTION_TIME (double)(12 / FRAMES_PER_ACTION) / 60
-#define FRAME_TIME (double)1 / 60
 
 //void load_model(torch::device device, torch::nn::Sequential& model)
 //{
@@ -117,22 +108,8 @@ void get_bullets(std::vector<bullet>& bullets)
 
 int main()
 {
-    Display *display;
-    Window  rootwindow;
-    XEvent  event;
-
-    display = XOpenDisplay(NULL);
-    rootwindow = DefaultRootWindow(display);
-
-    XSelectInput(display, rootwindow, KeyPressMask);
-
-    const std::array<unsigned int, 5> KEYS = {
-        XKeysymToKeycode(display, XK_Up),
-        XKeysymToKeycode(display, XK_Down),
-        XKeysymToKeycode(display, XK_Left),
-        XKeysymToKeycode(display, XK_Right),
-        XKeysymToKeycode(display, XK_Z)
-    }
+    controls ctrls;
+    const std::array<unsigned int, 5> KEYS = ctrls.get_keys()
 
 //    torch::nn::Sequential model = torch::nn::Sequential(
 //        torch::nn::ConstantPad2d(7, 1),
@@ -158,11 +135,11 @@ int main()
 //        torch::nn::Sigmoid(),
 //        torch::nn::ReLU()
 //    )
+
     std::vector<bullet> bullets;
-    torch::Tensor input = torch.Tensor{(2, 32, 32});
+    torch::Tensor input = torch::Tensor{(2, 32, 32});
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
-    controls ctrls;
 
     //load_model(torch::device("cpu"), model);
 
