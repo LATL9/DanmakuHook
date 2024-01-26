@@ -4,11 +4,14 @@ typedef struct vec2_t
     float y;
 } vec2;
 
-typedef struct entity_t
+typedef struct bullet_t
 {
     vec2 pos;
     vec2 size;
-} entity;
+} bullet;
 
-typedef struct bullet_t : entity_t { } bullet;
-typedef struct player_t : entity_t { } player;
+// player size is fixed
+typedef struct player_t
+{
+    vec2 pos;
+} player;

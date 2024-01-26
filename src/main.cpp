@@ -27,7 +27,7 @@ void get_data(player& p, std::vector<bullet>& bullets)
     // get player data
     if (!inp.fail)
     {
-        inp.read((char*)&p, sizeof(float) * 4);
+        inp.read((char*)&p, sizeof(float) * 2);
     }
 
     // get bullet data
@@ -83,7 +83,7 @@ void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& ou
     int32_t* y_ptr = input.data_ptr<int32_t>();
     std::vector<int32_t> y_vector{r_ptr, r_ptr + input.?};
 
-    for (size_t i = 0; i < FRAMES_PER_ACTIONl ++i)
+    for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
         {
@@ -93,7 +93,7 @@ void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& ou
         {
             if (output[i][j] == 1 and output[i][j + 1] == 1)
             {
-                if (y_vector[i * 4 + j] > j_vector[i * 4 + j + 1])
+                if (y_vector[i * 4 + j] > y_vector[i * 4 + j + 1])
                 {
                     output[i][j + 1] = 0
                 } else {
@@ -104,36 +104,24 @@ void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& ou
     }
 }
 
-void exec_action(std::array output, clock_t time, std::array KEYS)
-{
-    for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
-    {
-            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
-            for (size_t j = 0; j < 4; ++j)
-            {
-                XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
-            }
-    }
-}
-
 int main()
 {
     controls ctrls;
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
     torch::nn::Sequential model = torch::nn::Sequential(
-        torch::nn::ConstantPad2d(7, 1),
-        torch::nn::Conv2d(2, 16, kernel_size=(15, 15)),
+        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(7, 1)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(2, 16, 15)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
-        torch::nn::ConstantPad2d(3, 1),
-        torch::nn::Conv2d(16, 64, kernel_size=(7, 7)),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2, 2).stride(2)),
+        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(3, 1)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 64, 7)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
-        torch::nn::ConstantPad2d(1, 1),
-        torch::nn::Conv2d(64, 128, kernel_size=(3, 3)),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride(2)),
+        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(1, 1)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, 3)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d((2, 2), stride=2),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride(2)),
         torch::nn::Flatten(1, 3),
         torch::nn::Linear(2048, 1024),
         torch::nn::LeakyReLU(),
@@ -147,7 +135,7 @@ int main()
     )
 
     std::vector<bullet> bullets;
-    player p;
+    player p = { }; 
     torch::Tensor input = torch::full({ 2, 32, 32 }, 0);
 
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
