@@ -7,7 +7,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
-#include <X11/extesions/XTest.h>
+#include <X11/extensions/XTest.h>
 
 #include "torch/script.h"
 #include "torch/torch.h"
