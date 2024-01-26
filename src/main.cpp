@@ -1,14 +1,14 @@
-#include <array>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <time.h>
-#include <vector>
-
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
-
+//#include <array>
+//#include <cmath>
+//#include <fstream>
+//#include <iostream>
+//#include <time.h>
+//#include <vector>
+//
+//#include <X11/Xlib.h>
+//#include <X11/keysym.h>
+//#include <X11/extensions/XTest.h>
+//
 #include "torch/torch.h"
 
 #include "structs.hpp"
