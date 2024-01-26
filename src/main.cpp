@@ -162,7 +162,7 @@ int main()
 //        torch::nn::ReLU()
 //    )
     std::vector<bullet> bullets;
-    //torch::Tensor input = torch.Tensor{(2, 32, 32});
+    torch::Tensor input = torch.Tensor{(2, 32, 32});
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
 
