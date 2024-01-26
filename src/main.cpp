@@ -109,7 +109,7 @@ void get_bullets(std::vector<bullet>& bullets)
 int main()
 {
     controls ctrls;
-    const std::array<unsigned int, 5> KEYS = ctrls.get_keys()
+    const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
 //    torch::nn::Sequential model = torch::nn::Sequential(
 //        torch::nn::ConstantPad2d(7, 1),
@@ -137,7 +137,7 @@ int main()
 //    )
 
     std::vector<bullet> bullets;
-    torch::Tensor input = torch::Tensor{(2, 32, 32});
+    torch::Tensor input = torch::Tensor({ 2, 32, 32 });
     std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
     clock_t time;
 
