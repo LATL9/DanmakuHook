@@ -10,6 +10,6 @@
 #define FRAMES_PER_ACTION 3
 #define ACTION_TIME (double)(12 / FRAMES_PER_ACTION) / 60
 #define FRAME_TIME (double)1 / 60
-#define ACTION_THRESHLOD (double)1 / 60
+#define ACTION_THRESHOLD (double)1 / 60
 
 #endif

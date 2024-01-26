@@ -13,7 +13,7 @@
 
 void load_model(torch::nn::Sequential& model)
 {
-    auto checkpoint = torch.load("models/model.pt")
+    auto checkpoint = torch::load("models/model.pt")
     model.load_state_dict(checkpoint['model_state_dict'])
 }
 
@@ -25,7 +25,7 @@ void get_data(player& p, std::vector<bullet>& bullets)
     inp.open("bin.dat", std::ios::in | std::ios::binary);
 
     // get player data
-    if (!inp.fail)
+    if (!inp.fail())
     {
         inp.read((char*)&p, sizeof(float) * 2);
     }
@@ -40,10 +40,8 @@ void get_data(player& p, std::vector<bullet>& bullets)
     bullets.erase(bullets.begin());
 }
 
-get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
+void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
 {
-    torch::Tensor input;
-
     float b_x;
     float b_y;
     float p_x = p.pos.x + PLAYER_SIZE / 2;
@@ -51,7 +49,7 @@ get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bul
     int x;
     int y;
 
-    for (size_t i = 0; i < self.bullets.size(); ++i)
+    for (size_t i = 0; i < bullets.size(); ++i)
     {
         b_x = bullets[i].pos.x + bullets[i].size.x / 2;
         b_y = bullets[i].pos.y + bullets[i].size.y / 2;
@@ -62,26 +60,25 @@ get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bul
         {
             x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
             y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
-            for (size_t y_2 = -2; y_2 < 3; ++y);
+            for (size_t y_2 = -2; y_2 < 3; ++y_2);
             {
-                for (size_t x_2 = -2; y_2 < 3; ++y)
+                for (size_t x_2 = -2; x_2 < 3; ++x_2)
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        input[index][std::max(std::min(y + y_2, INPUT_SIZE - 1), 0)][std::max(std::min(x + x_2, INPUT_SIZE - 1), 0)] = 1;
+                        input[index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
             }
         }
     }
-    return input;
 }
 
-void get_action(torch::nn::Sequential model, torch::Tensor input, std::array& output)
+void get_action(torch::nn::Sequential model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
     torch::Tensor y = model(input);
     int32_t* y_ptr = input.data_ptr<int32_t>();
-    std::vector<int32_t> y_vector{r_ptr, r_ptr + input.?};
+    std::vector<int32_t> y_vector{y_ptr, y_ptr + input.?};
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
@@ -113,15 +110,15 @@ int main()
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(7, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(2, 16, 15)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2, 2).stride(2)),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions({2, 2}).stride({2, 2})),
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(3, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 64, 7)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride(2)),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions({(2, 2}).stride({2, 2})),
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(1, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, 3)),
         torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions((2, 2).stride(2)),
+        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions({(2, 2}).stride({2, 2})),
         torch::nn::Flatten(1, 3),
         torch::nn::Linear(2048, 1024),
         torch::nn::LeakyReLU(),
@@ -146,10 +143,10 @@ int main()
     while (true)
     {
         time = clock();
-        get_bullets(p, bullets);
+        get_data(p, bullets);
         get_input(input, 0, p, bullets);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
-        get_bullets(bullets);
+        get_data(p, bullets);
         get_input(input, 1, p, bullets);
 
         get_action(model, input, output);
