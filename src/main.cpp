@@ -9,7 +9,7 @@
 #include <X11/keysym.h>
 #include <X11/extensions/XTest.h>
 
-#include "torch/script.h"
+//#include "torch/script.h"
 //#include "torch/torch.h"
 //#include "ATen/ATen.h"
 
@@ -32,21 +32,21 @@
 //    model.to(device)
 //}
 
-void get_bullets(std::vector<bullet>& bullets)
-{
-    bullets.clear();
+//void get_bullets(std::vector<bullet>& bullets)
+//{
+//    bullets.clear();
 
-    std::ifstream inp;
-    inp.open("bin.dat", std::ios::in | std::ios::binary)
+//    std::ifstream inp;
+//    inp.open("bin.dat", std::ios::in | std::ios::binary);
 
-    bullet b;
-    while (!inp.fail())
-    {
-        bullets.push_back(b);
-        inp.read((char*)&b, sizeof(float) * 4);
-    }
-    bullets.erase(bullets.begin());
-}
+//    bullet b;
+//    while (!inp.fail())
+//    {
+//        bullets.push_back(b);
+//        inp.read((char*)&b, sizeof(float) * 4);
+//    }
+//    bullets.erase(bullets.begin());
+//}
 
 //void get_input(torch::Tensor& input, player p, std::vector<bullet> bullets)
 //{
@@ -122,22 +122,22 @@ void get_bullets(std::vector<bullet>& bullets)
 
 int main()
 {
-    Display *display;
-    Window  rootwindow;
-    XEvent  event;
+//    Display *display;
+//    Window  rootwindow;
+//    XEvent  event;
 
-    display = XOpenDisplay(NULL);
-    rootwindow = DefaultRootWindow(display);
+//    display = XOpenDisplay(NULL);
+//    rootwindow = DefaultRootWindow(display);
 
-    XSelectInput(display, rootwindow, KeyPressMask);
+//    XSelectInput(display, rootwindow, KeyPressMask);
 
-    const std::array<unsigned int, 5> KEYS = {
-        XKeysymToKeycode(display, XK_Up),
-        XKeysymToKeycode(display, XK_Down),
-        XKeysymToKeycode(display, XK_Left),
-        XKeysymToKeycode(display, XK_Right),
-        XKeysymToKeycode(display, XK_Z)
-    }
+//    const std::array<unsigned int, 5> KEYS = {
+//        XKeysymToKeycode(display, XK_Up),
+//        XKeysymToKeycode(display, XK_Down),
+//        XKeysymToKeycode(display, XK_Left),
+//        XKeysymToKeycode(display, XK_Right),
+//        XKeysymToKeycode(display, XK_Z)
+//    }
 
 //    torch::nn::Sequential model = torch::nn::Sequential(
 //        torch::nn::ConstantPad2d(7, 1),
@@ -163,26 +163,26 @@ int main()
 //        torch::nn::Sigmoid(),
 //        torch::nn::ReLU()
 //    )
-    std::vector<bullet> bullets;
-    //torch::Tensor input = torch.Tensor{(2, 32, 32});
-    std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
-    clock_t time;
+//    std::vector<bullet> bullets;
+//    //torch::Tensor input = torch.Tensor{(2, 32, 32});
+//    std::array output<std::array<unsigned int, 4>, FRAMES_PER_ACTION>;
+//    clock_t time;
 
-    //load_model(torch::device("cpu"), model);
+//    //load_model(torch::device("cpu"), model);
 
-    while (true)
-    {
-        time = clock();
-        get_bullets(bullets);
-        //get_input(input[0]);
-        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
-        get_bullets(bullets);
-        //get_input(input[1]);
+//    while (true)
+//    {
+//        time = clock();
+//        get_bullets(bullets);
+//        //get_input(input[0]);
+//        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
+//        get_bullets(bullets);
+//        //get_input(input[1]);
 
-        //get_action(model, input, output);
-        //exec_action(output, time, KEYS);
-        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
-    }
+//        //get_action(model, input, output);
+//        //exec_action(output, time, KEYS);
+//        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
+//    }
 
     return 0;
 }

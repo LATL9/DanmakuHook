@@ -8,7 +8,7 @@ typedef struct entity_t
 {
     vec2 pos;
     vec2 size;
-} entity
+} entity;
 
-typedef struct bullet_t : entity_t { } bullet
-typedef struct player_t : entity_t { } player
+typedef struct bullet_t : entity_t { } bullet;
+typedef struct player_t : entity_t { } player;
