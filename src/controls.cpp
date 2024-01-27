@@ -27,6 +27,7 @@ std::array<unsigned int, 4> controls::get_keys()
 
 void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output, clock_t time, std::array<unsigned int, 4> keys)
 {
+    XTestFakeKeyEvent(display, XKeysymToKeycode(display, XK_Y), 1, 0);
     for (size_t i = 0; i < 4; ++i)
     {
         if (output[0][i])
@@ -56,5 +57,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         XTestFakeKeyEvent(display, keys[i], 0, 0);
     }
+    XTestFakeKeyEvent(display, XKeysymToKeycode(display, XK_Y), 0, 0);
 }
 
