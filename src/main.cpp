@@ -45,6 +45,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     int x;
     int y;
 
+    std::cout << "A\n";
     for (size_t i = 0; i < bullets.size(); ++i)
     {
         if (bullets[i].pos.x - p.pos.x >= WIDTH / -3 &&
@@ -67,6 +68,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
+    std::cout << "B\n";
     float* input_array = input.data_ptr<float>();
     for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
     {
@@ -85,6 +87,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
         std::cout << '\n';
     }
+    std::cout << "C\n";
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
