@@ -11,9 +11,16 @@
 #include "controls.hpp"
 #include "structs.hpp"
 
-void load_model(torch::jit::script::Module& model)
+int load_model(torch::jit::script::Module& model)
 {
-    model = torch::jit::load("model.pt");
+    try
+    {
+        model = torch::jit::load("model.pt");
+    } catch (const c10::Error& e) {
+        std::cout << "Failed" << std::endl;
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
 }
 
 void get_data(player& p, std::vector<bullet>& bullets)
@@ -116,7 +123,10 @@ int main()
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
 
-    load_model(model);
+    if (load_model(model))
+    {
+        return -1;
+    }
 
     while (true)
     {
