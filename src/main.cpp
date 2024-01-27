@@ -66,7 +66,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        input[index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
+                        input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
             }
@@ -76,7 +76,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 
 void get_action(torch::nn::Sequential model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
-    torch::Tensor y = model(input);
+    torch::Tensor y = model.forward(input).toTensor();
     int32_t* y_ptr = input.data_ptr<int32_t>();
     std::vector<int32_t> y_vector{y_ptr, y_ptr + input.?};
 
@@ -106,35 +106,10 @@ int main()
     controls ctrls;
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
-    torch::jit::script::Module& 
-    torch::nn::Sequential model = torch::nn::Sequential(
-        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(7, 1)),
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(2, 16, 15)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2)),
-        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(3, 1)),
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 64, 7)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2)),
-        torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(1, 1)),
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(64, 128, 3)),
-        torch::nn::LeakyReLU(),
-        torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2)),
-        torch::nn::Flatten(1, 3),
-        torch::nn::Linear(2048, 1024),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(1024, 256),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(256, 64),
-        torch::nn::LeakyReLU(),
-        torch::nn::Linear(64, 4 * FRAMES_PER_ACTION),
-        torch::nn::Sigmoid(),
-        torch::nn::ReLU()
-    );
-
+    torch::jit::script::Module model; 
+    torch::Tensor input = torch::full({ 1, 2, 32, 32 }, 0);
     std::vector<bullet> bullets;
     player p = { }; 
-    torch::Tensor input = torch::full({ 2, 32, 32 }, 0);
 
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
