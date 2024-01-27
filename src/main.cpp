@@ -47,25 +47,19 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 
     for (size_t i = 0; i < bullets.size(); ++i)
     {
-        std::cout << "1\n";
         if (bullets[i].pos.x - p.pos.x >= WIDTH / -3 &&
             bullets[i].pos.x - p.pos.x < WIDTH / 3 &&
             bullets[i].pos.y - p.pos.y >= HEIGHT / -3 &&
             bullets[i].pos.y - p.pos.y < HEIGHT / 3)
         {
-            std::cout << "2\n";
             x = (int)((((bullets[i].pos.x - p.pos.x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
-            std::cout << "3\n";
             y = (int)((((bullets[i].pos.y - p.pos.y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
-            std::cout << "4\n";
             for (int y_2 = -2; y_2 < 3; ++y_2)
             {
                 for (int x_2 = -2; x_2 < 3; ++x_2)
                 {
-                    std::cout << "5\n";
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        std::cout << "6\n";
                         input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
@@ -73,14 +67,11 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
-    std::cout << "7\n";
     float* input_array = input.data_ptr<float>();
     for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
     {
-        std::cout << "8\n";
         for (int x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
-            std::cout << "9\n";
             switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
             {
                 case 0:
@@ -94,25 +85,30 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
         std::cout << '\n';
     }
-    std::cout << "10\n";
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
+    std::cout << "1\n";
     std::vector<torch::jit::IValue> inp = { input };
+    std::cout << "2\n";
     at::Tensor y = model.forward(inp).toTensor();
+    std::cout << "3\n";
     float* y_array = y.data_ptr<float>();
+    std::cout << "4\n";
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
         {
+            std::cout << "5\n";
             if (y_array[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
         }
         for (size_t j = 0; j < 4; j += 2)
         {
             if (output[i][j] == 1 and output[i][j + 1] == 1)
             {
+                std::cout << "6\n";
                 if (y_array[i * 4 + j] > y_array[i * 4 + j + 1])
                 {
                     output[i][j + 1] = 0;
@@ -123,6 +119,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
         }
         for (size_t j = 0; j < 4; ++j)
         {
+            std::cout << "7\n";
             switch (output[i][j])
             {
                 case 0:
@@ -154,6 +151,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
         std::cout << '\n';
     }
     std::cout << '\n';
+    std::cout << "8\n";
 }
 
 int main()
