@@ -18,38 +18,26 @@ void load_model(torch::jit::script::Module& model)
 
 void get_data(player& p, std::vector<bullet>& bullets)
 {
-    std::cout << "1\n";
     std::filesystem::copy("input.bin", "input.bin.tmp", std::filesystem::copy_options::overwrite_existing);
-    std::cout << "2\n";
     bullets.clear();
 
-    std::cout << "3\n";
     std::ifstream inp;
-    std::cout << "4\n";
     inp.open("input.bin.tmp", std::ios::in | std::ios::binary);
 
     // get player data
-    std::cout << "5\n";
     if (!inp.fail())
     {
-        std::cout << "6\n";
         inp.read((char*)&p, sizeof(vec2));
     }
 
     // get bullet data
-    std::cout << "7\n";
     bullet b;
-    std::cout << "8\n";
     while (!inp.fail())
     {
-        std::cout << "9\n";
         bullets.push_back(b);
-        std::cout << "10\n";
         inp.read((char*)&b, sizeof(vec2) * 2);
     }
-    std::cout << "11\n";
     bullets.erase(bullets.begin());
-    std::cout << "12\n";
 }
 
 void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
@@ -59,19 +47,25 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 
     for (size_t i = 0; i < bullets.size(); ++i)
     {
+        std::cout << "1\n";
         if (bullets[i].pos.x - p.pos.x >= WIDTH / -3 &&
             bullets[i].pos.x - p.pos.x < WIDTH / 3 &&
             bullets[i].pos.y - p.pos.y >= HEIGHT / -3 &&
             bullets[i].pos.y - p.pos.y < HEIGHT / 3)
         {
+            std::cout << "2\n";
             x = (int)((((bullets[i].pos.x - p.pos.x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
+            std::cout << "3\n";
             y = (int)((((bullets[i].pos.y - p.pos.y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
+            std::cout << "4\n";
             for (int y_2 = -2; y_2 < 3; ++y_2)
             {
                 for (int x_2 = -2; x_2 < 3; ++x_2)
                 {
+                    std::cout << "5\n";
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
+                        std::cout << "6\n";
                         input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
@@ -79,11 +73,14 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
+    std::cout << "7\n";
     float* input_array = input.data_ptr<float>();
     for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
     {
+        std::cout << "8\n";
         for (int x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
+            std::cout << "9\n";
             switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
             {
                 case 0:
@@ -97,6 +94,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
         std::cout << '\n';
     }
+    std::cout << "10\n";
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
