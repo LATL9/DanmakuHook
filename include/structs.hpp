@@ -1,7 +1,7 @@
 typedef struct vec2_t
 {
-    long x;
-    long y;
+    float x;
+    float y;
 } vec2;
 
 typedef struct bullet_t
