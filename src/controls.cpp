@@ -27,15 +27,35 @@ std::array<unsigned int, 4> controls::get_keys()
 
 void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output, clock_t time, std::array<unsigned int, 4> keys)
 {
-    for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
+    for (size_t i = 0; i < 4; ++i)
     {
-            // sync each action to clock
-            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+        if (output[0][i])
+        {
+            XTestFakeKeyEvent(display, keys[i], 1, 0);
+        }
+    }
+    // sync each action to clock
+    for (size_t i = 1; i < FRAMES_PER_ACTION; ++i)
+    {
             for (size_t j = 0; j < 4; ++j)
             {
-                XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
+                if (output[i][j] && !output[i - 1][j])
+                {
+                    XTestFakeKeyEvent(display, keys[j], 1, 0);
+                }
+                if (!output[i][j] && output[i - 1][j])
+                {
+                    XTestFakeKeyEvent(display, keys[j], 0, 0);
+                }
                 if (output[i][j]) { XTestFakeKeyEvent(display, keys[j], 0, 0); }
             }
+            // sync each action to clock
+            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+    }
+    // release all keys
+    for (size_t i = 0; i < 4; ++i)
+    {
+        XTestFakeKeyEvent(display, keys[i], 0, 0);
     }
 }
 
