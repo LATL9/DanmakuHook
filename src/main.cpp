@@ -73,11 +73,11 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
             switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
             {
                 case 0:
-                    std::cout << '.';
+                    std::cout << "..";
                     break;
 
                 default:
-                    std::cout << 'O';
+                    std::cout << "OO";
                     break;
             }
         }
