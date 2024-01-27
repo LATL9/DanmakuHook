@@ -151,7 +151,8 @@ int main()
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
     torch::jit::script::Module model; 
-    torch::Tensor input = torch::empty({ 1, 2, 32, 32 }, torch::kFloat);
+    torch::Tensor input = torch::full({ 1, 2, 32, 32 }, 0);
+    input = input.to(torch::kFloat);
     std::vector<bullet> bullets;
     player p = { }; 
 
@@ -162,10 +163,13 @@ int main()
 
     while (true)
     {
+        input.fill_(0);
         time = clock();
+
         get_data(p, bullets);
         get_input(input, 0, p, bullets);
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
+
         get_data(p, bullets);
         get_input(input, 1, p, bullets);
 
