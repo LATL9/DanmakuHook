@@ -66,24 +66,15 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
-//    float* input_array = input.data_ptr<float>();
-//    for (size_t y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
-//    {
-//        for (size_t x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
-//        {
-//            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
-//            {
-//                case 1:
-//                    std::cout << 'X';
-//                    break;
-//
-//                default:
-//                    std::cout << ' ';
-//                    break;
-//            }
-//        }
-//        std::cout << '\n';
-//    }
+    float* input_array = input.data_ptr<float>();
+    for (size_t y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
+    {
+        for (size_t x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
+        {
+            std::cout << (int)input_array[y_2 * INPUT_SIZE + x_2];
+        }
+        std::cout << '\n';
+    }
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
