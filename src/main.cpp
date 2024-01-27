@@ -74,7 +74,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     }
 }
 
-void get_action(torch::nn::Sequential model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
+void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
     torch::Tensor y = model.forward(input).toTensor();
     int32_t* y_ptr = input.data_ptr<int32_t>();
