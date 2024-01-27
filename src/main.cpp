@@ -11,6 +11,14 @@
 #include "controls.hpp"
 #include "structs.hpp"
 
+void read_vec2(std::ifstream& inp, vec2& vec)
+{
+    vec2_float temp;
+    inp.read((char*)&temp, sizeof(vec2_float));
+    vec.x = (long)temp.x;
+    vec.y = (long)temp.y;
+}
+
 void load_model(torch::jit::script::Module& model)
 {
     model = torch::jit::load("model.pt");
@@ -26,7 +34,7 @@ void get_data(player& p, std::vector<bullet>& bullets)
     // get player data
     if (!inp.fail())
     {
-        inp.read((char*)&p, sizeof(float) * 2);
+        read_vec2(inp, &p);
     }
 
     // get bullet data
@@ -34,7 +42,8 @@ void get_data(player& p, std::vector<bullet>& bullets)
     while (!inp.fail())
     {
         bullets.push_back(b);
-        inp.read((char*)&b, sizeof(float) * 4);
+        read_vec2(inp, &b.pos);
+        read_vec2(inp, &b.size);
     }
     bullets.erase(bullets.begin());
 }

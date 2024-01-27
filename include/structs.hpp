@@ -1,7 +1,13 @@
-typedef struct vec2_t
+// holds immediate data from twinhook
+typedef struct vec2_float_t
 {
     float x;
     float y;
+} vec2;
+typedef struct vec2_t
+{
+    long x;
+    long y;
 } vec2;
 
 typedef struct bullet_t
