@@ -47,7 +47,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
                 {
                     XTestFakeKeyEvent(display, keys[j], 0, 0);
                 }
-                if (output[i][j]) { XTestFakeKeyEvent(display, keys[j], 0, 0); }
             }
             // sync each action to clock
             while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
