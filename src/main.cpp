@@ -70,16 +70,17 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     {
         for (size_t x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
-            switch ((int)(input[0][y_2][x_2].item<float>()))
-            {
-                case 1:
-                    std::cout << 'X';
-                    break;
-
-                default:
-                    std::cout << ' ';
-                    break;
-            }
+            std::cout << input_array[y_2 * INPUT_SIZE + x_2];
+//            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
+//            {
+//                case 1:
+//                    std::cout << 'X';
+//                    break;
+//
+//                default:
+//                    std::cout << ' ';
+//                    break;
+//            }
         }
         std::cout << '\n';
     }
