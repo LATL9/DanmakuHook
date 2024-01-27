@@ -3,7 +3,6 @@
 controls::controls()
 {
     Window rootwindow;
-    XEvent event; // TODO: unused
 
     display = XOpenDisplay(NULL);
     rootwindow = DefaultRootWindow(display);

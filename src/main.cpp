@@ -9,7 +9,6 @@
 
 #include "common.hpp"
 #include "controls.hpp"
-#include "structs.hpp"
 
 void load_model(torch::jit::script::Module& model)
 {
@@ -41,31 +40,25 @@ void get_data(player& p, std::vector<bullet>& bullets)
 
 void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
 {
-    float b_x;
-    float b_y;
-    float p_x = p.pos.x + PLAYER_SIZE / 2;
-    float p_y = p.pos.y + PLAYER_SIZE / 2;
     int x;
     int y;
 
     for (size_t i = 0; i < bullets.size(); ++i)
     {
-        b_x = bullets[i].pos.x + bullets[i].size.x / 2;
-        b_y = bullets[i].pos.y + bullets[i].size.y / 2;
-        if (b_x - p_x >= WIDTH / -3 &&
-            b_x - p_x < WIDTH / 3 &&
-            b_y - p_y >= HEIGHT / -3 &&
-            b_y - p_y < HEIGHT / 3)
+        if (bullets[i].pos.x - p.pos.x >= WIDTH / -3 &&
+            bullets[i].pos.x - p.pos.x < WIDTH / 3 &&
+            bullets[i].pos.y - p.pos.y >= HEIGHT / -3 &&
+            bullets[i].pos.y - p.pos.y < HEIGHT / 3)
         {
-            x = (int)((((b_x - p_x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
-            y = (int)((((b_y - p_y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
+            x = (int)((((bullets[i].pos.x - p.pos.x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
+            y = (int)((((bullets[i].pos.y - p.pos.y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
             for (size_t y_2 = -2; y_2 < 3; ++y_2)
             {
                 for (size_t x_2 = -2; x_2 < 3; ++x_2)
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
-                        //input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
+                        input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
             }
