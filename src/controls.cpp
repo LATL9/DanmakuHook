@@ -32,6 +32,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
 //        std::array<unsigned int, 4>{ 0, 1, 0, 0 },
 //        std::array<unsigned int, 4>{ 0, 0, 1, 0 }
 //    };
+    std::cout << "START\n";
     for (size_t i = 0; i < 4; ++i)
     {
         if (output[0][i])
@@ -93,6 +94,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         // sync each action to clock
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
     }
+    std::cout << "END\n";
     // release all keys
     for (size_t i = 0; i < 4; ++i)
     {
