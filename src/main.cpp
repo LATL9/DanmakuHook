@@ -71,16 +71,16 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         for (size_t x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
             std::cout << input_array[y_2 * INPUT_SIZE + x_2] << ' ';
-//            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
-//            {
-//                case 1:
-//                    std::cout << 'X';
-//                    break;
-//
-//                default:
-//                    std::cout << ' ';
-//                    break;
-//            }
+            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
+            {
+                case 1:
+                    std::cout << 'X';
+                    break;
+
+                default:
+                    std::cout << ' ';
+                    break;
+            }
         }
         std::cout << '\n';
     }
@@ -151,8 +151,7 @@ int main()
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
     torch::jit::script::Module model; 
-    torch::Tensor input = torch::full({ 1, 2, 32, 32 }, 0);
-    input = input.to(torch::kFloat);
+    torch::Tensor input = torch::empty({ 1, 2, 32, 32 }, torch::kFloat);
     std::vector<bullet> bullets;
     player p = { }; 
 
