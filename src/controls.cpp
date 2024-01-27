@@ -40,5 +40,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
                 XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
             }
     }
+    std::cout << "5\n";
 }
 
