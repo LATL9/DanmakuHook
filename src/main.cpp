@@ -31,13 +31,13 @@ void get_data(player& p, std::vector<bullet>& bullets)
     }
 
     // get bullet data
-    bullet b;
+    bullet b = { { 0, 0 }, { 0, 0 } };
     while (!inp.fail())
     {
         bullets.push_back(b);
         inp.read((char*)&b, sizeof(vec2) * 2);
     }
-    bullets.erase(bullets.begin());
+//    bullets.erase(bullets.begin());
 }
 
 void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
