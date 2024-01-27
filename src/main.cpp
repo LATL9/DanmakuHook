@@ -44,8 +44,9 @@ void get_data(player& p, std::vector<bullet>& bullets)
 //    bullets.erase(bullets.begin());
 }
 
-void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
+bool get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
 {
+    bool no_bullets = true;
     int x;
     int y;
 
@@ -64,6 +65,10 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
                 {
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
+                        if (no_bullets)
+                        {
+                            no_bullets = false;
+                        }
                         input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
                     }
                 }
@@ -89,9 +94,10 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 //        }
 //        std::cout << '\n';
 //    }
+      return no_bullets;
 }
 
-void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
+void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION>& output)
 {
     std::vector<torch::jit::IValue> inp = { input };
     at::Tensor y = model.forward(inp).toTensor();
@@ -159,6 +165,7 @@ int main()
     player p = { }; 
 
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
+    bool no_bullets;
     clock_t time;
 
     load_model(model);
@@ -167,17 +174,22 @@ int main()
     {
         input.fill_(0);
         output.fill(std::array<unsigned int, 4>{ 0 });
+        no_bullets = true;
         time = clock();
 
         get_data(p, bullets);
-        get_input(input, 0, p, bullets);
+        if (!get_input(input, 0, p, bullets))
+        {
+            no_bullets = false;
+        }
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
 
         get_data(p, bullets);
-        get_input(input, 1, p, bullets);
-
-        get_action(model, input, output);
-        ctrls.exec_action(output, time, KEYS);
+        if (!get_input(input, 1, p, bullets) or !no_bullets)
+        {
+            get_action(model, input, output);
+            ctrls.exec_action(output, time, KEYS);
+        }
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
     }
 
