@@ -117,7 +117,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
         }
         for (size_t j = 0; j < 4; ++j)
         {
-            switch (j)
+            switch (output[i][j])
             {
                 case 0:
                     std::cout << "↑";
