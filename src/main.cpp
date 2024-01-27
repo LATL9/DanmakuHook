@@ -15,7 +15,7 @@ int load_model(torch::jit::script::Module& model)
 {
     try
     {
-        model = torch::jit::load("model.pt");
+        model = torch::jit::load("model.pt", c10::kCPU);
     } catch (const c10::Error& e) {
         std::cout << "Failed" << std::endl;
         std::cerr << e.what() << std::endl;
