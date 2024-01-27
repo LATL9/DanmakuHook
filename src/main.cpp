@@ -115,39 +115,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
                 }
             }
         }
-        for (size_t j = 0; j < 4; ++j)
-        {
-            switch (output[i][j])
-            {
-                case 0:
-                    std::cout << " ";
-                    break;
-
-                default:
-                    switch (j)
-                    {
-                        case 0:
-                            std::cout << "↑";
-                            break;
-
-                        case 1:
-                            std::cout << "↓";
-                            break;
-
-                        case 2:
-                            std::cout << "←";
-                            break;
-
-                        case 3:
-                            std::cout << "→";
-                            break;
-                    }
-                    break;
-            }
-        }
-        std::cout << '\n';
     }
-    std::cout << '\n';
 }
 
 int main()
