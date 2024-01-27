@@ -1,5 +1,6 @@
 #include <array>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <time.h>
@@ -17,10 +18,11 @@ void load_model(torch::jit::script::Module& model)
 
 void get_data(player& p, std::vector<bullet>& bullets)
 {
+    std::filesystem::copy("input.bin", "input.bin.tmp");
     bullets.clear();
 
     std::ifstream inp;
-    inp.open("input.bin", std::ios::in | std::ios::binary);
+    inp.open("input.bin.tmp", std::ios::in | std::ios::binary);
 
     // get player data
     if (!inp.fail())
