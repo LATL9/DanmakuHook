@@ -1,3 +1,4 @@
+#include <iostream>
 #include "controls.hpp"
 
 controls::controls()
@@ -26,12 +27,16 @@ std::array<unsigned int, 4> controls::get_keys()
 
 void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output, clock_t time, std::array<unsigned int, 4> keys)
 {
+    std::cout << "1\n";
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
+            std::cout << "2\n";
             // sync each action to clock
             while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+            std::cout << "3\n";
             for (size_t j = 0; j < 4; ++j)
             {
+                std::cout << "4\n";
                 XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
             }
     }
