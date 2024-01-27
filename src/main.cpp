@@ -71,24 +71,24 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
-    float* input_array = input.data_ptr<float>();
-    for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
-    {
-        for (int x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
-        {
-            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
-            {
-                case 0:
-                    std::cout << "..";
-                    break;
-
-                default:
-                    std::cout << "OO";
-                    break;
-            }
-        }
-        std::cout << '\n';
-    }
+//    float* input_array = input.data_ptr<float>();
+//    for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
+//    {
+//        for (int x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
+//        {
+//            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
+//            {
+//                case 0:
+//                    std::cout << "..";
+//                    break;
+//
+//                default:
+//                    std::cout << "OO";
+//                    break;
+//            }
+//        }
+//        std::cout << '\n';
+//    }
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
@@ -115,39 +115,39 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
                 }
             }
         }
-//        for (size_t j = 0; j < 4; ++j)
-//        {
-//            switch (output[i][j])
-//            {
-//                case 0:
-//                    std::cout << " ";
-//                    break;
-//
-//                default:
-//                    switch (j)
-//                    {
-//                        case 0:
-//                            std::cout << "↑";
-//                            break;
-//
-//                        case 1:
-//                            std::cout << "↓";
-//                            break;
-//
-//                        case 2:
-//                            std::cout << "←";
-//                            break;
-//
-//                        case 3:
-//                            std::cout << "→";
-//                            break;
-//                    }
-//                    break;
-//            }
-//        }
-//        std::cout << '\n';
+        for (size_t j = 0; j < 4; ++j)
+        {
+            switch (output[i][j])
+            {
+                case 0:
+                    std::cout << " ";
+                    break;
+
+                default:
+                    switch (j)
+                    {
+                        case 0:
+                            std::cout << "↑";
+                            break;
+
+                        case 1:
+                            std::cout << "↓";
+                            break;
+
+                        case 2:
+                            std::cout << "←";
+                            break;
+
+                        case 3:
+                            std::cout << "→";
+                            break;
+                    }
+                    break;
+            }
+        }
+        std::cout << '\n';
     }
-//    std::cout << '\n';
+    std::cout << '\n';
 }
 
 int main()
