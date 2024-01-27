@@ -20,7 +20,7 @@ void get_data(player& p, std::vector<bullet>& bullets)
     bullets.clear();
 
     std::ifstream inp;
-    inp.open("input.dat", std::ios::in | std::ios::binary);
+    inp.open("input.bin", std::ios::in | std::ios::binary);
 
     // get player data
     if (!inp.fail())
