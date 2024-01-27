@@ -173,14 +173,14 @@ int main()
 
         std::cout << "3\n";
         get_data(p, bullets);
-        std::cout << "4\n";
+        std::cout << "4 length: " << bullets.size() << '\n';
         get_input(input, 0, p, bullets);
         std::cout << "5\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
 
         std::cout << "6\n";
         get_data(p, bullets);
-        std::cout << "7\n";
+        std::cout << "7 length: " << bullets.size() << '\n';
         get_input(input, 1, p, bullets);
 
         std::cout << "8\n";
