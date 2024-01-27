@@ -5,7 +5,7 @@
 #include <time.h>
 #include <vector>
 
-#include "torch/torch.h"
+#include "torch/script.h"
 
 #include "common.hpp"
 #include "controls.hpp"
@@ -13,7 +13,6 @@
 
 void load_model(torch::jit::script::Module& model)
 {
-    torch::jit::script::Module model;
     model = torch::jit::load("model.pt");
 }
 
@@ -76,21 +75,21 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
-    torch::Tensor y = model.forward(input).toTensor();
-    int32_t* y_ptr = input.data_ptr<int32_t>();
-    std::vector<int32_t> y_vector{y_ptr, y_ptr + input.?};
+    std::vector<torch::jit::IValue> inp = { input };
+    torch::Tensor y = model.forward(inp).toTensor();
+    long* y_array = y.data<long>();
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
         {
-            if (y_vector[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
+            if (y_array[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
         }
         for (size_t j = 0; j < 4; j += 2)
         {
             if (output[i][j] == 1 and output[i][j + 1] == 1)
             {
-                if (y_vector[i * 4 + j] > y_vector[i * 4 + j + 1])
+                if (y_array[i * 4 + j] > y_array[i * 4 + j + 1])
                 {
                     output[i][j + 1] = 0;
                 } else {
