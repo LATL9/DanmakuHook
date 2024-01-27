@@ -37,7 +37,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         if (output[0][i])
         {
-            std::cout << "LKJASDLKDA1111111111111\n";
             switch (i)
             {
                 case 0:
@@ -66,7 +65,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         {
             if (output[i][j] && !output[i - 1][j])
             {
-                std::cout << "LKJASDLKDA\n";
                 switch (j)
                 {
                     case 0:
@@ -89,7 +87,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
             }
             if (!output[i][j] && output[i - 1][j])
             {
-                std::cout << "LKJASDLKDA22222222222222222\n";
                 XTestFakeKeyEvent(display, keys[j], 0, 0);
             }
         }

@@ -101,7 +101,6 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
     {
         for (size_t j = 0; j < 4; ++j)
         {
-            std::cout << y_array[i * 4 + j];
             if (y_array[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
         }
         for (size_t j = 0; j < 4; j += 2)
