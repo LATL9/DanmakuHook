@@ -52,13 +52,10 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         {
             x = (int)((((bullets[i].pos.x - p.pos.x) / (WIDTH / 3)) + 1) * (INPUT_SIZE / 2));
             y = (int)((((bullets[i].pos.y - p.pos.y) / (HEIGHT / 3)) + 1) * (INPUT_SIZE / 2));
-            std::cout << x << ", " << y << '\n';
             for (int y_2 = -2; y_2 < 3; ++y_2)
             {
                 for (int x_2 = -2; x_2 < 3; ++x_2)
                 {
-                    std::cout << "LASKJDLAKSD";
-                    std::cout << pow(pow(x_2, 2) + pow(y_2, 2), 0.5) << ' ';
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
                         input[0][index][std::max(std::min((int)(y + y_2), INPUT_SIZE - 1), 0)][std::max(std::min((int)(x + x_2), INPUT_SIZE - 1), 0)] = 1;
@@ -74,7 +71,16 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     {
         for (int x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
-            std::cout << (int)input_array[y_2 * INPUT_SIZE + x_2];
+            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
+            {
+                case 0:
+                    std::cout << '.';
+                    break;
+
+                default:
+                    std::cout << 'O';
+                    break;
+            }
         }
         std::cout << '\n';
     }
