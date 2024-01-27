@@ -89,26 +89,20 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
-    std::cout << "1\n";
     std::vector<torch::jit::IValue> inp = { input };
-    std::cout << "2\n";
     at::Tensor y = model.forward(inp).toTensor();
-    std::cout << "3\n";
     float* y_array = y.data_ptr<float>();
-    std::cout << "4\n";
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
         {
-            std::cout << "5\n";
             if (y_array[i * 4 + j] > ACTION_THRESHOLD) { output[i][j] = 1; }
         }
         for (size_t j = 0; j < 4; j += 2)
         {
             if (output[i][j] == 1 and output[i][j + 1] == 1)
             {
-                std::cout << "6\n";
                 if (y_array[i * 4 + j] > y_array[i * 4 + j + 1])
                 {
                     output[i][j + 1] = 0;
@@ -119,7 +113,6 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
         }
         for (size_t j = 0; j < 4; ++j)
         {
-            std::cout << "7\n";
             switch (output[i][j])
             {
                 case 0:
@@ -151,7 +144,6 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
         std::cout << '\n';
     }
     std::cout << '\n';
-    std::cout << "8\n";
 }
 
 int main()
