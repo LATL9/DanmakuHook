@@ -37,7 +37,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         if (output[0][i])
         {
-            std::cout << "";
+            std::cout << " ";
             switch (i)
             {
                 case 0:
