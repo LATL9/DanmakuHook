@@ -163,19 +163,30 @@ int main()
 
     while (true)
     {
+        std::cout << "1\n";
         input.fill_(0);
+        std::cout << "2\n";
         time = clock();
 
+        std::cout << "3\n";
         get_data(p, bullets);
+        std::cout << "4\n";
         get_input(input, 0, p, bullets);
+        std::cout << "5\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
 
+        std::cout << "6\n";
         get_data(p, bullets);
+        std::cout << "7\n";
         get_input(input, 1, p, bullets);
 
+        std::cout << "8\n";
         get_action(model, input, output);
+        std::cout << "9\n";
         ctrls.exec_action(output, time, KEYS);
+        std::cout << "10\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
+        std::cout << "11\n";
     }
 
     return 0;
