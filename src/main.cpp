@@ -168,6 +168,7 @@ int main()
     while (true)
     {
         input.fill_(0);
+        output.fill(std::array<unsigned int, 4>{ 0 });
         time = clock();
 
         get_data(p, bullets);
