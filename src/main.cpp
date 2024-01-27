@@ -108,8 +108,7 @@ int main()
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
     torch::jit::script::Module model; 
-    torch::Tensor input = torch::empty({ 1, 2, 32, 32 });
-    input = input.to(torch::kFloat);
+    torch::Tensor input = torch::empty({ 1, 2, 32, 32 }, torch::kFloat);
     std::vector<bullet> bullets;
     player p = { }; 
 
