@@ -77,7 +77,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
 {
     std::vector<torch::jit::IValue> inp = { input };
     torch::Tensor y = model.forward(inp).toTensor();
-    long* y_array = y.data<long>();
+    float* y_array = y.data<float>();
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
     {
