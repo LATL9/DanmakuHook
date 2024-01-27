@@ -11,15 +11,9 @@
 #include "controls.hpp"
 #include "structs.hpp"
 
-int load_model(torch::jit::script::Module& model)
+void load_model(torch::jit::script::Module& model)
 {
-    try
-    {
-        model = torch::jit::load("model.pt", c10::kCPU);
-    } catch (...) {
-        std::cout << "Failed" << std::endl;
-        return -1;
-    }
+    model = torch::jit::load("model.pt");
 }
 
 void get_data(player& p, std::vector<bullet>& bullets)
@@ -83,7 +77,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
 {
     std::vector<torch::jit::IValue> inp = { input };
     std::cout << "LASKJDLAKSJDDJ\n";
-    at::Tensor y = model.forward(inp).toTensor();
+    torch::Tensor y = model.forward(inp).toTensor();
     std::cout << "PPPPPPPPPPPPPPPPPP\n";
     float* y_array = y.data_ptr<float>();
 
@@ -122,10 +116,7 @@ int main()
     std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output;
     clock_t time;
 
-    if (load_model(model))
-    {
-        return -1;
-    }
+    load_model(model);
 
     while (true)
     {
