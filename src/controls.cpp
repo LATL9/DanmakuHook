@@ -49,6 +49,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
                     XTestFakeKeyEvent(display, keys[j], 0, 0);
                 }
             }
+            XFlush(display);
             // sync each action to clock
             while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
     }
@@ -58,6 +59,5 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         XTestFakeKeyEvent(display, keys[i], 0, 0);
     }
     XTestFakeKeyEvent(display, XKeysymToKeycode(display, XK_Y), 0, 0);
-    XFlush(display);
 }
 
