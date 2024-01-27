@@ -95,26 +95,26 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
             switch (output[i][j])
             {
                 case 0:
-                    std::cout << ' ';
+                    std::cout << " ";
                     break;
 
                 default:
                     switch (j)
                     {
                         case 0:
-                            std::cout << '↑';
+                            std::cout << "↑";
                             break;
 
                         case 1:
-                            std::cout << '↓';
+                            std::cout << "↓";
                             break;
 
                         case 2:
-                            std::cout << '←';
+                            std::cout << "←";
                             break;
 
                         case 3:
-                            std::cout << '→';
+                            std::cout << "→";
                             break;
                     }
                     break;
