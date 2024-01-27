@@ -76,9 +76,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
 {
     std::vector<torch::jit::IValue> inp = { input };
-    std::cout << "LASKJDLAKSJDDJ\n";
     at::Tensor y = model.forward(inp).toTensor();
-    std::cout << "PPPPPPPPPPPPPPPPPP\n";
     float* y_array = y.data_ptr<float>();
 
     for (size_t i = 0; i < FRAMES_PER_ACTION; ++i)
