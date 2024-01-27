@@ -35,6 +35,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     std::cout << "START\n";
     for (size_t i = 0; i < 4; ++i)
     {
+        std::cout << output[0][i];
         if (output[0][i])
         {
             switch (i)
