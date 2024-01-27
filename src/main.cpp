@@ -70,7 +70,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     {
         for (size_t x_2 = 0; x_2 < INPUT_SIZE; ++x_2)
         {
-            std::cout << input_array[y_2 * INPUT_SIZE + x_2];
+            std::cout << input_array[y_2 * INPUT_SIZE + x_2] << ' ';
 //            switch ((int)input_array[y_2 * INPUT_SIZE + x_2])
 //            {
 //                case 1:
