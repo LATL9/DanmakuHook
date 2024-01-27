@@ -27,11 +27,11 @@ std::array<unsigned int, 4> controls::get_keys()
 
 void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output, clock_t time, std::array<unsigned int, 4> keys)
 {
-    output = std::array<std::array<unsigned int, 4>, 3> {
-        std::array<unsigned int, 4>{ 1, 0, 0, 0 },
-        std::array<unsigned int, 4>{ 0, 1, 0, 0 },
-        std::array<unsigned int, 4>{ 0, 0, 1, 0 }
-    };
+//    output = std::array<std::array<unsigned int, 4>, 3> {
+//        std::array<unsigned int, 4>{ 1, 0, 0, 0 },
+//        std::array<unsigned int, 4>{ 0, 1, 0, 0 },
+//        std::array<unsigned int, 4>{ 0, 0, 1, 0 }
+//    };
 
     std::cout << "LASKDJL\n";
     for (size_t i = 0; i < 4; ++i)

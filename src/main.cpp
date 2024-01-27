@@ -114,6 +114,7 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
                     output[i][j] = 0;
                 }
             }
+            if (output[i][j] == 1) { std::cout << "BULLET"; }
         }
     }
 }
