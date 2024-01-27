@@ -51,7 +51,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
             }
             XTestFakeKeyEvent(display, keys[i], 1, 0);
         }
-        std::cout << '\n';
     }
     // sync each action to clock
     for (size_t i = 1; i < FRAMES_PER_ACTION; ++i)
@@ -88,9 +87,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         XFlush(display);
         // sync each action to clock
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
-        std::cout << '\n';
     }
-    std::cout << '\n';
     // release all keys
     for (size_t i = 0; i < 4; ++i)
     {
