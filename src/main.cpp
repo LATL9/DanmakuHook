@@ -18,26 +18,38 @@ void load_model(torch::jit::script::Module& model)
 
 void get_data(player& p, std::vector<bullet>& bullets)
 {
+    std::cout << "1\n";
     std::filesystem::copy("input.bin", "input.bin.tmp", std::filesystem::copy_options::overwrite_existing);
+    std::cout << "2\n";
     bullets.clear();
 
+    std::cout << "3\n";
     std::ifstream inp;
+    std::cout << "4\n";
     inp.open("input.bin.tmp", std::ios::in | std::ios::binary);
 
     // get player data
+    std::cout << "5\n";
     if (!inp.fail())
     {
+        std::cout << "6\n";
         inp.read((char*)&p, sizeof(vec2));
     }
 
     // get bullet data
+    std::cout << "7\n";
     bullet b;
+    std::cout << "8\n";
     while (!inp.fail())
     {
+        std::cout << "9\n";
         bullets.push_back(b);
+        std::cout << "10\n";
         inp.read((char*)&b, sizeof(vec2) * 2);
     }
+    std::cout << "11\n";
     bullets.erase(bullets.begin());
+    std::cout << "12\n";
 }
 
 void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet> bullets)
