@@ -32,8 +32,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
 //        std::array<unsigned int, 4>{ 0, 1, 0, 0 },
 //        std::array<unsigned int, 4>{ 0, 0, 1, 0 }
 //    };
-
-    std::cout << "LASKDJL\n";
     for (size_t i = 0; i < 4; ++i)
     {
         if (output[0][i])
