@@ -57,6 +57,7 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
             {
                 for (size_t x_2 = -2; x_2 < 3; ++x_2)
                 {
+                    std::cout << "LASKJDLAKSD";
                     std::cout << pow(pow(x_2, 2) + pow(y_2, 2), 0.5) << ' ';
                     if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
                     {
