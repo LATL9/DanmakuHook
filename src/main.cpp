@@ -18,7 +18,7 @@ void load_model(torch::jit::script::Module& model)
 
 void get_data(player& p, std::vector<bullet>& bullets)
 {
-    std::filesystem::copy("input.bin", "input.bin.tmp");
+    std::filesystem::copy("input.bin", "input.bin.tmp", std::filesystem::copy_options::overwrite_existing);
     bullets.clear();
 
     std::ifstream inp;
