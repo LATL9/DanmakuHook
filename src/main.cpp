@@ -31,11 +31,15 @@ void get_data(player& p, std::vector<bullet>& bullets)
     }
 
     // get bullet data
-    bullet b = { { 0, 0 }, { 0, 0 } };
-    while (!inp.fail())
+    bullet b;
+    inp.read((char*)&b, sizeof(vec2) * 2);
+    if (!inp.fail())
     {
-        bullets.push_back(b);
-        inp.read((char*)&b, sizeof(vec2) * 2);
+        while (!inp.fail())
+        {
+            bullets.push_back(b);
+            inp.read((char*)&b, sizeof(vec2) * 2);
+        }
     }
 //    bullets.erase(bullets.begin());
 }
@@ -45,7 +49,6 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
     int x;
     int y;
 
-    std::cout << "A\n";
     for (size_t i = 0; i < bullets.size(); ++i)
     {
         if (bullets[i].pos.x - p.pos.x >= WIDTH / -3 &&
@@ -68,7 +71,6 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
     }
 
-    std::cout << "B\n";
     float* input_array = input.data_ptr<float>();
     for (int y_2 = 0; y_2 < INPUT_SIZE; ++y_2)
     {
@@ -87,7 +89,6 @@ void get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
         }
         std::cout << '\n';
     }
-    std::cout << "C\n";
 }
 
 void get_action(torch::jit::script::Module model, torch::Tensor input, std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output)
@@ -166,26 +167,17 @@ int main()
 
     while (true)
     {
-        std::cout << "1\n";
         input.fill_(0);
-        std::cout << "2\n";
         time = clock();
 
-        std::cout << "3\n";
         get_data(p, bullets);
-        std::cout << "4 length: " << bullets.size() << '\n';
         get_input(input, 0, p, bullets);
-        std::cout << "5\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME) { continue; }
 
-        std::cout << "6\n";
         get_data(p, bullets);
-        std::cout << "7 length: " << bullets.size() << '\n';
         get_input(input, 1, p, bullets);
 
-        std::cout << "8\n";
         get_action(model, input, output);
-        std::cout << "9\n";
         ctrls.exec_action(output, time, KEYS);
         std::cout << "10\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
