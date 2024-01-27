@@ -11,10 +11,10 @@
 #include "controls.hpp"
 #include "structs.hpp"
 
-void load_model(torch::nn::Sequential& model)
+void load_model(torch::jit::script::Module& model)
 {
-    auto checkpoint = torch::load("models/model.pt");
-    model.load_state_dict(checkpoint['model_state_dict']);
+    torch::jit::script::Module model;
+    model = torch::jit::load("model.pt");
 }
 
 void get_data(player& p, std::vector<bullet>& bullets)
@@ -106,6 +106,7 @@ int main()
     controls ctrls;
     const std::array<unsigned int, 4> KEYS = ctrls.get_keys();
 
+    torch::jit::script::Module& 
     torch::nn::Sequential model = torch::nn::Sequential(
         torch::nn::ConstantPad2d(torch::nn::ConstantPad2dOptions(7, 1)),
         torch::nn::Conv2d(torch::nn::Conv2dOptions(2, 16, 15)),
