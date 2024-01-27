@@ -34,6 +34,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
             for (size_t j = 0; j < 4; ++j)
             {
                 XTestFakeKeyEvent(display, keys[j], output[i][j], 0);
+                if (output[i][j]) { XTestFakeKeyEvent(display, keys[j], 0, 0); }
             }
     }
 }
