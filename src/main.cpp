@@ -180,9 +180,7 @@ int main()
 
         get_action(model, input, output);
         ctrls.exec_action(output, time, KEYS);
-        std::cout << "10\n";
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME) { continue; }
-        std::cout << "11\n";
     }
 
     return 0;

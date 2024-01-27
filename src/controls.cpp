@@ -31,27 +31,66 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         if (output[0][i])
         {
+            switch (i)
+            {
+                case 0:
+                    std::cout << "↑";
+                    break;
+
+                case 1:
+                    std::cout << "↓";
+                    break;
+
+                case 2:
+                    std::cout << "←";
+                    break;
+
+                case 3:
+                    std::cout << "→";
+                    break;
+            }
             XTestFakeKeyEvent(display, keys[i], 1, 0);
         }
+        std::cout << '\n';
     }
     // sync each action to clock
     for (size_t i = 1; i < FRAMES_PER_ACTION; ++i)
     {
-            for (size_t j = 0; j < 4; ++j)
+        for (size_t j = 0; j < 4; ++j)
+        {
+            if (output[i][j] && !output[i - 1][j])
             {
-                if (output[i][j] && !output[i - 1][j])
+                switch (j)
                 {
-                    XTestFakeKeyEvent(display, keys[j], 1, 0);
+                    case 0:
+                        std::cout << "↑";
+                        break;
+
+                    case 1:
+                        std::cout << "↓";
+                        break;
+
+                    case 2:
+                        std::cout << "←";
+                        break;
+
+                    case 3:
+                        std::cout << "→";
+                        break;
                 }
-                if (!output[i][j] && output[i - 1][j])
-                {
-                    XTestFakeKeyEvent(display, keys[j], 0, 0);
-                }
+                XTestFakeKeyEvent(display, keys[j], 1, 0);
             }
-            XFlush(display);
-            // sync each action to clock
-            while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+            if (!output[i][j] && output[i - 1][j])
+            {
+                XTestFakeKeyEvent(display, keys[j], 0, 0);
+            }
+        }
+        XFlush(display);
+        // sync each action to clock
+        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+        std::cout << '\n';
     }
+    std::cout << '\n';
     // release all keys
     for (size_t i = 0; i < 4; ++i)
     {
