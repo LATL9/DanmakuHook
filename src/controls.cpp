@@ -58,5 +58,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         XTestFakeKeyEvent(display, keys[i], 0, 0);
     }
     XTestFakeKeyEvent(display, XKeysymToKeycode(display, XK_Y), 0, 0);
+    XFlush(display);
 }
 
