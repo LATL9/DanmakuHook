@@ -143,8 +143,8 @@ void get_action(torch::jit::script::Module model, torch::Tensor input, std::arra
                             break;
                     }
             }
-            std::cout << '\n';
         }
+        std::cout << '\n';
     }
 }
 
