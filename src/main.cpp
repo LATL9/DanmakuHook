@@ -109,7 +109,7 @@ int main()
 
     torch::jit::script::Module model; 
     torch::Tensor input = torch::empty({ 1, 2, 32, 32 });
-    input = input.to(torch::kLong);
+    input = input.to(torch::kFloat);
     std::vector<bullet> bullets;
     player p = { }; 
 
