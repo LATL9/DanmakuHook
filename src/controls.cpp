@@ -27,35 +27,10 @@ std::array<unsigned int, 4> controls::get_keys()
 
 void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_ACTION> output, clock_t time, std::array<unsigned int, 4> keys)
 {
-//    output = std::array<std::array<unsigned int, 4>, 3> {
-//        std::array<unsigned int, 4>{ 1, 0, 0, 0 },
-//        std::array<unsigned int, 4>{ 0, 1, 0, 0 },
-//        std::array<unsigned int, 4>{ 0, 0, 1, 0 }
-//    };
-    std::cout << "START\n";
     for (size_t i = 0; i < 4; ++i)
     {
-        std::cout << output[0][i];
         if (output[0][i])
         {
-            switch (i)
-            {
-                case 0:
-                    std::cout << "↑";
-                    break;
-
-                case 1:
-                    std::cout << "↓";
-                    break;
-
-                case 2:
-                    std::cout << "←";
-                    break;
-
-                case 3:
-                    std::cout << "→";
-                    break;
-            }
             XTestFakeKeyEvent(display, keys[i], 1, 0);
         }
     }
@@ -66,24 +41,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         {
             if (output[i][j] && !output[i - 1][j])
             {
-                switch (j)
-                {
-                    case 0:
-                        std::cout << "↑";
-                        break;
-
-                    case 1:
-                        std::cout << "↓";
-                        break;
-
-                    case 2:
-                        std::cout << "←";
-                        break;
-
-                    case 3:
-                        std::cout << "→";
-                        break;
-                }
                 XTestFakeKeyEvent(display, keys[j], 1, 0);
             }
             if (!output[i][j] && output[i - 1][j])
@@ -95,7 +52,6 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
         // sync each action to clock
         while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
     }
-    std::cout << "END\n";
     // release all keys
     for (size_t i = 0; i < 4; ++i)
     {
