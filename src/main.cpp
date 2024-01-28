@@ -63,7 +63,7 @@ bool get_input(torch::Tensor& input, size_t index, player& p, std::vector<bullet
             {
                 for (int x_2 = -2; x_2 < 3; ++x_2)
                 {
-                    if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 2.5)
+                    if (pow(pow(x_2, 2) + pow(y_2, 2), 0.5) <= 1.5)
                     {
                         if (no_bullets)
                         {
