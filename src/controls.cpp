@@ -3,9 +3,10 @@
 
 controls::controls()
 {
+    // code required to send key events through X11
     Window rootwindow;
 
-    display = XOpenDisplay(NULL);
+    display = XOpenDisplay(NULL); // NULL => display 0
     rootwindow = DefaultRootWindow(display);
 
     XSelectInput(display, rootwindow, KeyPressMask);
@@ -31,6 +32,7 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         if (output[0][i])
         {
+            // presses key
             XTestFakeKeyEvent(display, keys[i], 1, 0);
         }
     }
@@ -39,24 +41,28 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
     {
         for (size_t j = 0; j < 4; ++j)
         {
+            // presses key if key is down now but was previously up
             if (output[i][j] && !output[i - 1][j])
             {
                 XTestFakeKeyEvent(display, keys[j], 1, 0);
             }
+            // releases key if key is up now but was previously down
             if (!output[i][j] && output[i - 1][j])
             {
                 XTestFakeKeyEvent(display, keys[j], 0, 0);
             }
         }
-        XFlush(display);
-        // sync each action to clock
-        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; }
+
+        XFlush(display); // flush key events
+        while ((double)(clock() - time) / CLOCKS_PER_SEC < FRAME_TIME + ACTION_TIME * (i + 1)) { continue; } // wait for end of action (sync with clock)
     }
+
     // release all keys
     for (size_t i = 0; i < 4; ++i)
     {
         XTestFakeKeyEvent(display, keys[i], 0, 0);
     }
+
     XFlush(display);
 }
 

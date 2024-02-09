@@ -1,6 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+// window dimensions for bullet-hell game (東方永夜抄 〜 Imperishable Night)
 #define WIDTH 384
 #define HEIGHT 384 // actually 448, but dimensions should be square for get_input()
 
@@ -24,7 +25,7 @@ typedef struct bullet_t
     vec2 size;
 } bullet;
 
-// player size is fixed
+// player size is constant
 typedef struct player_t
 {
     vec2 pos;
