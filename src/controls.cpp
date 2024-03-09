@@ -65,4 +65,3 @@ void controls::exec_action(std::array<std::array<unsigned int, 4>, FRAMES_PER_AC
 
     XFlush(display);
 }
-
